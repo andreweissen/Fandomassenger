@@ -1,0 +1,43 @@
+{
+  "en": {
+    "consoleWelcome": "Welcome to Fandomassenger!",
+    "consoleExit": "Thank you for using Fandomassenger",
+
+    "consoleWikiLocation": "Please include the wiki's full base address",
+    "consoleWikiLocationExample": "Example: https://eizen.fandom.com",
+    "consoleWikiLocationPrompt": "URL: ",
+
+    "consoleSignin": "Please sign in:",
+    "consoleSigninUsernamePrompt": "Username: ",
+    "consoleSigninPasswordPrompt": "Password: ",
+
+    "consoleType": "Please select entries type:",
+    "consoleTypeCategories": "Import usernames from categories",
+    "consoleTypeLoose": "Input list of usernames",
+    "consoleTypeExit": "Exit application",
+    "consoleTypePrompt": "Select: ",
+
+    "consoleEntries": "Please input entries separated by commas",
+    "consoleEntriesPrompt": "Entries: ",
+
+    "consoleMessage": "Please input your message title and body (Notes: Title is required and body may use wikitext)",
+    "consoleMessageTitlePrompt": "Title: ",
+    "consoleMessageBodyPrompt": "Body: ",
+
+    "successMessage": "Success: Successfully messaged $1",
+    "successComplete": "Success: All operations complete",
+
+    "errorLogin": "Error: Unable to login using these credentials. Please try again",
+    "errorNonexistentWiki": "Error: A problem was encountered connecting to this wiki's API",
+    "errorAPI": "Error: A problem was encountered connecting to and querying the API",
+    "errorInsufficientPermissions": "Error: User account lacks sufficient user rights on this wiki",
+    "errorWikiLocation": "Error: Invalid URL. URL must include schema and domain must be \"fandom.com\" or \"wikia.org\"",
+    "errorTypeInvalid": "Error: Invalid selection",
+    "errorNoValidUsernames": "Error: No valid usernames found in input",
+    "errorNoCategoryMembers": "Error: A problem was encountered with input categories",
+    "errorEditInterval": "Error: A problem was encountered retrieving an edit interval from the API. Default value has been applied",
+    "errorMessageTitleMissing": "Error: Message title attribute is required",
+    "errorMessageStd": "Error: Unable to message $1",
+    "errorMessageAPI": "Error: Unable to message $1 due to API query problems"
+  }
+}
