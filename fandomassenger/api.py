@@ -297,7 +297,7 @@ def get_login_token(api_php, session=None):
         :param session: An optional `requests.Session` object. If no session is
             passed, a new `requests.Session` is instantiated for the function.
         :return: A string login token retrieved from the API for use in the
-            ``login`` method if successful, or an empty string if not.
+            ``login`` method if successful.
     """
 
     try:
@@ -333,15 +333,13 @@ def get_rate_limit_interval(api_php, session=None):
     bots and accounts with the bot flag, the limit is 80 edits/minute. For
     standard user accounts, the limit is 40 edits/minute. When calculated,
     these give rise to the edit intervals of .75 seconds and 1.5 seconds,
-    respectively. The latter is used as the default value of the optional
-    ``default_interval`` formal parameter used in the event of API error.
+    respectively.
         :param api_php: The full URL pointing to the MediaWiki Action API
             `api.php` resource
         :param session: An optional `requests.Session` object. If no session is
             passed, a new `requests.Session` is instantiated for the function.
-        :return: An appropriate rate limit edit interval is returned, either
-            that calculated from the values passed by the MediaWiki API
-            request, or the ``default_interval`` formal parameter value.
+        :return: An appropriate rate limit edit interval is returned, as
+            calculated from the values passed by the MediaWiki API request
     """
 
     try:
