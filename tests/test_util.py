@@ -1,4 +1,4 @@
-from fandomassenger import util
+import fandomassenger.util
 
 
 def test_is_fandom_wiki_base_url():
@@ -36,6 +36,6 @@ def test_is_fandom_wiki_base_url():
     for test_case in test_cases:
         print(f'Test case: {test_case["url"]}')
         print(f'\tExpected result: {test_case["result"]}')
-        outcome = util.is_fandom_wiki_base_url(test_case["url"])
+        outcome = fandomassenger.util.is_fandom_wiki_base_url(test_case["url"])
         print(f"\tObserved result: {outcome}")
         print(f'\t{("Failed", "Passed")[outcome == test_case["result"]]}')

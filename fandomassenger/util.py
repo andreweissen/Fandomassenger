@@ -7,9 +7,6 @@ application-specific logic that might hinder their porting to a different
 package or program.
 """
 
-from urllib.parse import urlparse
-from html.parser import HTMLParser
-
 __version__ = "0.1"
 __author__ = "Andrew Eissen"
 __all__ = [
@@ -22,14 +19,16 @@ __all__ = [
     "split_delimited_string_into_list"
 ]
 
-import json
-import os
-import locale
 import ctypes
+import html.parser
+import json
+import locale
+import os
 import re
+import urllib.parse
 
 
-class JsonModelHTMLParser(HTMLParser):
+class JsonModelHTMLParser(html.parser.HTMLParser):
 
     def __init__(self):
         """
@@ -43,7 +42,7 @@ class JsonModelHTMLParser(HTMLParser):
         future as this sort of text formatting is permissible in Message Wall
         thread content.
         """
-        HTMLParser.__init__(self)
+        html.parser.HTMLParser.__init__(self)
 
         # Temporary holding stacks for <p> and <a> HTML elements
         self.paragraphs_stack = []
@@ -247,7 +246,7 @@ def is_fandom_wiki_base_url(url):
         :return: A boolean representing whether the parameter url's base address
             is ``wikia.org`` or ``fandom.com`` is returned
     """
-    parsed = urlparse(url.strip(" "))
+    parsed = urllib.parse.urlparse(url.strip(" "))
 
     # Only scheme and netloc should be present in base URL
     if (not parsed.scheme or not parsed.netloc or parsed.path or parsed.params

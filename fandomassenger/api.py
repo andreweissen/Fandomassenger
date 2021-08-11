@@ -8,10 +8,6 @@ raising exceptions or performing computer member access to return the necessary
 values for calling functions.
 """
 
-from re import split as re_split
-from time import sleep
-from json.decoder import JSONDecodeError
-
 __version__ = "0.1"
 __author__ = "Andrew Eissen"
 __all__ = [
@@ -29,7 +25,10 @@ __all__ = [
     "post_user_talk_message"
 ]
 
+import json.decoder
+import re
 import requests
+import time
 
 
 class QueryException(Exception):
@@ -106,7 +105,7 @@ def get_category_members(categories, interval, api_php, session=None):
         # Employ human sort (i.e. "Page 2" before "Page 10", not vice versa)
         regex = r"[+-]?([0-9]+(?:[.][0-9]*)?|[.][0-9]+)"
         members.sort(key=lambda m: [float(c) if c.isdigit() else c.lower()
-                                    for c in re_split(regex, m)])
+                                    for c in re.split(regex, m)])
 
     return members
 
@@ -163,7 +162,7 @@ def _get_category_members(interval, api_php, session=None, config=None,
         request.raise_for_status()
 
         data = request.json()
-    except (requests.exceptions.HTTPError, JSONDecodeError):
+    except (requests.exceptions.HTTPError, json.decoder.JSONDecodeError):
         raise QueryException()
 
     # Successful query with errors mediated by means of faulty input
@@ -179,7 +178,7 @@ def _get_category_members(interval, api_php, session=None, config=None,
         if "query-continue" in data:
 
             # Sleep to avoid rate limiting...
-            sleep(interval)
+            time.sleep(interval)
 
             # ...and recursively call self until all pages are acquired
             _get_category_members(interval, api_php, session, {**config, **{
@@ -270,7 +269,7 @@ def get_csrf_token(api_php, session=None):
         request.raise_for_status()
 
         data = request.json()
-    except (requests.exceptions.HTTPError, JSONDecodeError):
+    except (requests.exceptions.HTTPError, json.decoder.JSONDecodeError):
         raise QueryException()
 
     try:
@@ -310,7 +309,7 @@ def get_login_token(api_php, session=None):
         request.raise_for_status()
 
         data = request.json()
-    except (requests.exceptions.HTTPError, JSONDecodeError):
+    except (requests.exceptions.HTTPError, json.decoder.JSONDecodeError):
         raise QueryException()
 
     try:
@@ -352,7 +351,7 @@ def get_rate_limit_interval(api_php, session=None):
         request.raise_for_status()
 
         data = request.json()
-    except(requests.exceptions.HTTPError, JSONDecodeError):
+    except(requests.exceptions.HTTPError, json.decoder.JSONDecodeError):
         raise QueryException()
 
     # Successful query with errors mediated by means of faulty input
@@ -423,7 +422,7 @@ def get_user_data(usernames, api_php, retrieve_groups=False, session=None):
                                                       params=params)
         request.raise_for_status()
         data = request.json()
-    except (requests.exceptions.HTTPError, JSONDecodeError):
+    except (requests.exceptions.HTTPError, json.decoder.JSONDecodeError):
         raise QueryException()
 
     try:
@@ -475,7 +474,7 @@ def has_message_walls(wikia_php, session=None):
         request.raise_for_status()
 
         data = request.json()
-    except (requests.exceptions.HTTPError, JSONDecodeError):
+    except (requests.exceptions.HTTPError, json.decoder.JSONDecodeError):
         raise QueryException()
 
     # Successful query with errors mediated by means of faulty input
@@ -522,7 +521,7 @@ def login(username, password, api_php, session=None):
         request.raise_for_status()
 
         data = request.json()
-    except (requests.exceptions.HTTPError, JSONDecodeError):
+    except (requests.exceptions.HTTPError, json.decoder.JSONDecodeError):
         raise QueryException()
 
     # Successful query with errors mediated by means of faulty input
@@ -570,7 +569,7 @@ def parse_wikitext(wikitext, api_php, session=None):
         request.raise_for_status()
 
         data = request.json()
-    except (requests.exceptions.HTTPError, JSONDecodeError):
+    except (requests.exceptions.HTTPError, json.decoder.JSONDecodeError):
         raise QueryException()
 
     # Successful query with errors mediated by means of faulty input
@@ -652,7 +651,7 @@ def post_message_wall_thread(userid, title, json_model, wikia_php, api_php,
         request.raise_for_status()
 
         data = request.json()
-    except (requests.exceptions.HTTPError, JSONDecodeError):
+    except (requests.exceptions.HTTPError, json.decoder.JSONDecodeError):
         raise QueryException()
 
     try:
@@ -699,7 +698,7 @@ def post_user_talk_message(page, title, body, api_php, session=None):
         request.raise_for_status()
 
         data = request.json()
-    except (requests.exceptions.HTTPError, JSONDecodeError):
+    except (requests.exceptions.HTTPError, json.decoder.JSONDecodeError):
         raise QueryException()
 
     # Successful query with errors mediated by means of faulty input

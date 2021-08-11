@@ -4,14 +4,13 @@ responsible for undertaking the main application logic of the Fandomassenger
 application and overseeing the performing of all the attendant operations.
 """
 
-from time import sleep
-
 __all__ = []
 __version__ = "0.1"
 __author__ = "Andrew Eissen"
 
 import requests
 import api
+import time
 import util
 
 
@@ -198,13 +197,13 @@ def main():
                                            session)
         except api.QueryException:
             print(i18n["errorAPI"])
-            sleep(interval)
+            time.sleep(interval)
             continue
 
         # Reset if no valid usernames are retrieved from relevant query
         except api.InputException:
             print(i18n["errorNoValidUsernames"])
-            sleep(interval)
+            time.sleep(interval)
             continue
 
         print(i18n["consoleMessage"])
@@ -268,10 +267,10 @@ def main():
 
             # Sleep for set edit interval to ensure rate limiting is prevented
             finally:
-                sleep(interval)
+                time.sleep(interval)
 
         print(i18n["successComplete"])
-        sleep(interval)
+        time.sleep(interval)
 
 
 if __name__ == "__main__":
