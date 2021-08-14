@@ -8,42 +8,10 @@ __all__ = []
 __version__ = "0.1"
 __author__ = "Andrew Eissen"
 
-import configparser
 import requests
 import api
-import sys
 import time
 import util
-
-
-def main2():
-    # Check for command line args
-    if len(sys.argv) > 1:
-        input_data = sys.argv[1:]
-    else:
-        try:
-            # Check if settings.ini file is present
-            parser = configparser.ConfigParser()
-            parser.read("../data/settings.ini")
-            input_data = parser["DEFAULT"].values()
-        except KeyError:
-            # Prompt for manual inclusion
-            if sys.stdin.isatty():
-                main()
-            else:
-                sys.exit(1)
-
-    # Grab i18n file for console message text
-    try:
-        i18n_file = util.get_json_file("../data/i18n.json")
-    except FileNotFoundError:
-        return
-
-    try:
-        i18n = i18n_file[util.determine_system_language()]
-    except KeyError:
-        # If requested language doesn't exist in i18n, default to English
-        i18n = i18n_file["en"]
 
 
 def main():
