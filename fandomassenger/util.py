@@ -7,8 +7,6 @@ application-specific logic that might hinder their porting to a different
 package or program.
 """
 
-__version__ = "0.1"
-__author__ = "Andrew Eissen"
 __all__ = [
     "JsonModelHTMLParser",
     "determine_system_language",
@@ -18,6 +16,8 @@ __all__ = [
     "pretty_print",
     "split_delimited_string_into_list"
 ]
+__author__ = "Andrew Eissen"
+__version__ = "0.1"
 
 import ctypes
 import html.parser

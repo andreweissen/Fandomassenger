@@ -8,8 +8,6 @@ raising exceptions or performing computer member access to return the necessary
 values for calling functions.
 """
 
-__version__ = "0.1"
-__author__ = "Andrew Eissen"
 __all__ = [
     "QueryException",
     "InputException",
@@ -24,6 +22,8 @@ __all__ = [
     "post_message_wall_thread",
     "post_user_talk_message"
 ]
+__author__ = "Andrew Eissen"
+__version__ = "0.1"
 
 import json.decoder
 import re
@@ -171,8 +171,7 @@ def _get_category_members(interval, api_php, session=None, config=None,
 
     try:
         # Add page title to master members list
-        for member in data["query"]["categorymembers"]:
-            members.append(member["title"])
+        members += [cm["title"] for cm in data["query"]["categorymembers"]]
 
         # If there are more members than can be retrieved in one call...
         if "query-continue" in data:
@@ -220,7 +219,7 @@ def _get_category_members_process(interval, counter, categories, api_php,
             over the course of multiple recursive calls.
     """
 
-    if isinstance(members, type(None)):
+    if members is None:
         members = []
 
     # Recursive end condition, return master list once all cats queried
@@ -237,7 +236,7 @@ def _get_category_members_process(interval, counter, categories, api_php,
 
     # Add retrieved member pages to master list if applicable
     if len(pages):
-        members = members + pages
+        members += pages
 
     # Recursively call self while there remain categories to query
     return _get_category_members_process(interval, counter, categories, api_php,
@@ -468,7 +467,7 @@ def has_message_walls(wikia_php, session=None):
         request = (session or requests.Session()).get(url=wikia_php, params={
             "controller": "UserProfile",
             "method": "getUserData",
-            "userId": 4403388,
+            "userId": 4403388, # Base Fandom user account ID
             "format": "json",
         })
         request.raise_for_status()

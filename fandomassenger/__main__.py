@@ -5,11 +5,11 @@ application and overseeing the performing of all the attendant operations.
 """
 
 __all__ = []
-__version__ = "0.1"
 __author__ = "Andrew Eissen"
+__version__ = "0.1"
 
-import requests
 import api
+import requests
 import time
 import util
 
@@ -132,15 +132,14 @@ def main():
         indices = []
         members = []
         input_entries = []
-        options = [
-            i18n["consoleTypeCategories"],
-            i18n["consoleTypeLoose"],
-            i18n["consoleTypeExit"]
-        ]
 
         # Create de facto menu with indices derived from enumerate
         print(i18n["consoleType"])
-        for index, option in enumerate(options):
+        for index, option in enumerate([
+            i18n["consoleTypeCategories"],
+            i18n["consoleTypeLoose"],
+            i18n["consoleTypeExit"]
+        ]):
             indices.append(index + 1)
             print(f"{index + 1}: {option}")
 
@@ -164,8 +163,6 @@ def main():
             print(i18n["consoleExit"])
             break
 
-        is_categories = selected_index == 1
-
         # Acquire recipient or category list, separated by comma delimiters
         print(i18n["consoleEntries"])
         while not len(input_entries):
@@ -174,7 +171,7 @@ def main():
                                                                   ",")
 
         # If the user wants to edit members of a user category...
-        if is_categories:
+        if is_categories := (selected_index == 1):
             try:
                 members = api.get_category_members(input_entries, interval,
                                                    wiki["api_php"], session)
@@ -219,20 +216,15 @@ def main():
         message_body = input(i18n["consoleMessageBodyPrompt"])
 
         # Determine if wiki has Message Wall extension installed locally
-        has_message_walls = api.has_message_walls(wiki["wikia_php"], session)
-
         # As the MW extension is not built on MW, two-phase parsing is needed
-        if has_message_walls:
+        if has_walls := api.has_message_walls(wiki["wikia_php"], session):
 
             # First, convert input wikitext to well-formed HTML string
             parsed_message_body = api.parse_wikitext(message_body,
                                                      wiki["api_php"], session)
 
             # Instantiate HTML parser to convert HTML to ProseMirror jsonModel
-            parser = util.JsonModelHTMLParser()
-
-            # Parse input HTML
-            parser.feed(parsed_message_body)
+            (parser := util.JsonModelHTMLParser()).feed(parsed_message_body)
 
             # Convert JSON jsonModel to string for inclusion as query parameter
             json_model = parser.get_json_model_as_string()
@@ -252,7 +244,7 @@ def main():
             try:
                 # Set loop iteration-specific param immediately prior to call
                 first_param = (f'User talk:{user_dict["name"]}',
-                               user_dict["userid"])[has_message_walls]
+                               user_dict["userid"])[has_walls]
                 if index == 0:
                     params.insert(index, first_param)
                 else:
