@@ -53,7 +53,7 @@ def main():
             util.log_msg(i18n["consoleWikiLocation"])
             util.log_msg(i18n["consoleWikiLocationExample"])
 
-            input_url = input(i18n["consoleWikiLocationPrompt"])
+            input_url = util.log_prompt(i18n["consoleWikiLocationPrompt"])
 
             # Check if fandom.com or wikia.org is base URL, loop again if not
             if not util.is_fandom_wiki_base_url(input_url):
@@ -71,8 +71,8 @@ def main():
         util.log_msg(i18n["consoleSignin"])
 
         # Acquire potential credentials
-        username = input(i18n["consoleSigninUsernamePrompt"])
-        password = input(i18n["consoleSigninPasswordPrompt"])
+        username = util.log_prompt(i18n["consoleSigninUsernamePrompt"])
+        password = util.log_prompt(i18n["consoleSigninPasswordPrompt"])
 
         try:
             # Test credentials using login method
@@ -146,7 +146,7 @@ def main():
         # Ensure users cannot enter indices not provided as menu options
         while selected_index not in indices:
             try:
-                selected_index = int(input(i18n["consoleTypePrompt"]))
+                selected_index = int(util.log_prompt(i18n["consoleTypePrompt"]))
 
             # Ensure plaintext cannot be entered, ony menu option indices
             except ValueError:
@@ -166,7 +166,7 @@ def main():
         # Acquire recipient or category list, separated by comma delimiters
         util.log_msg(i18n["consoleEntries"])
         while not len(input_entries):
-            input_entries = input(i18n["consoleEntriesPrompt"])
+            input_entries = util.log_prompt(i18n["consoleEntriesPrompt"])
             input_entries = util.split_delimited_string_into_list(input_entries,
                                                                   ",")
 
@@ -205,7 +205,7 @@ def main():
 
         util.log_msg(i18n["consoleMessage"])
         while True:
-            message_title = input(i18n["consoleMessageTitlePrompt"])
+            message_title = util.log_prompt(i18n["consoleMessageTitlePrompt"])
 
             # Unlike message body, message title is required in all cases
             if not len(message_title):
@@ -213,7 +213,7 @@ def main():
             else:
                 break
 
-        message_body = input(i18n["consoleMessageBodyPrompt"])
+        message_body = util.log_prompt(i18n["consoleMessageBodyPrompt"])
 
         # Determine if wiki has Message Wall extension installed locally
         # As the MW extension is not built on MW, two-phase parsing is needed

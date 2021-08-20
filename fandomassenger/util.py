@@ -14,6 +14,7 @@ __all__ = [
     "has_rights",
     "is_fandom_wiki_base_url",
     "log_msg",
+    "log_prompt",
     "pretty_print",
     "split_delimited_string_into_list"
 ]
@@ -280,6 +281,22 @@ def log_msg(message_text, is_error=False):
     """
     (text_io := (sys.stdout, sys.stderr)[is_error]).write(f"{message_text}\n")
     text_io.flush()
+
+
+def log_prompt(message_text):
+    """
+    The ``log_prompt`` function is used to prompt the user for input, strip that
+    input of whitespace, and return the value passed by the user to the calling
+    function. It can be conceived of as a substitute for the default ``input``
+    function that permits a bit more stylistic control.
+        :param message_text: A string representing the intended message to print
+            to the text IO as the prompt
+        :return: The user input value, obtained from ``sys.stdin.readline`` and
+            stripped of whitespace
+    """
+    sys.stdout.write(f"{message_text}: ")
+    sys.stdout.flush()
+    return sys.stdin.readline().rstrip()
 
 
 def pretty_print(json_data):
