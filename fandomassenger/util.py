@@ -13,6 +13,7 @@ __all__ = [
     "get_json_file",
     "has_rights",
     "is_fandom_wiki_base_url",
+    "log_msg",
     "pretty_print",
     "split_delimited_string_into_list"
 ]
@@ -25,11 +26,11 @@ import json
 import locale
 import os
 import re
+import sys
 import urllib.parse
 
 
 class JsonModelHTMLParser(html.parser.HTMLParser):
-
     def __init__(self):
         """
         The ``JsonModelHTMLParser`` class is a subclass extending the base
@@ -162,7 +163,7 @@ class JsonModelHTMLParser(html.parser.HTMLParser):
                 in the course of parsing the input HTML
             :return: None
         """
-        print(message)
+        log_msg(message, True)
 
     def get_json_model_as_string(self):
         """
@@ -265,6 +266,23 @@ def is_fandom_wiki_base_url(url):
     return domain in ["fandom.com", "wikia.org"]
 
 
+def log_msg(message_text, is_error=False):
+    """
+    The ``log_msg`` function is simply used to log a message in the console
+    (expected) using either the ``sys.stdout`` or ``sys.stderr`` text IOs. It
+    was intended to behavior much alike to the default ``print`` function but
+    with a little more stylistic control.
+        :param message_text: A string representing the intended message to print
+            to the text IO
+        :param is_error: An optional boolean denoting whether the message being
+            logged is an error necessitating the use of ``sys.stderr``
+        :return: None
+    """
+
+    (text_io := (sys.stdout, sys.stderr)[is_error]).write(f"{message_text}\n")
+    text_io.flush()
+
+
 def pretty_print(json_data):
     """
     The ``pretty_print`` function is used simply to "pretty print" JSON response
@@ -278,7 +296,7 @@ def pretty_print(json_data):
             rendered unordered with two-space indent
         :return: None
     """
-    print(json.dumps(json_data, indent=2, sort_keys=False))
+    log_msg(json.dumps(json_data, indent=2, sort_keys=False))
 
 
 def split_delimited_string_into_list(string, delimiter):

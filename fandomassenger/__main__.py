@@ -43,21 +43,21 @@ def main():
     session = requests.Session()
 
     # Print welcome message
-    print(i18n["consoleWelcome"])
+    util.log_msg(i18n["consoleWelcome"])
 
     # Login loop; runs until successful login
     while not is_logged_in:
 
         # Continue to prompt while input URL is malformed
         while not len(wiki):
-            print(i18n["consoleWikiLocation"])
-            print(i18n["consoleWikiLocationExample"])
+            util.log_msg(i18n["consoleWikiLocation"])
+            util.log_msg(i18n["consoleWikiLocationExample"])
 
             input_url = input(i18n["consoleWikiLocationPrompt"])
 
             # Check if fandom.com or wikia.org is base URL, loop again if not
             if not util.is_fandom_wiki_base_url(input_url):
-                print(i18n["errorWikiLocation"])
+                util.log_msg(i18n["errorWikiLocation"], True)
                 continue
 
             # Store URLs for querying purposes
@@ -68,7 +68,7 @@ def main():
             }
 
         # Sign in using bot password
-        print(i18n["consoleSignin"])
+        util.log_msg(i18n["consoleSignin"])
 
         # Acquire potential credentials
         username = input(i18n["consoleSigninUsernamePrompt"])
@@ -81,17 +81,17 @@ def main():
 
         # Catch queries made to nonexistent wikis
         except api.QueryException:
-            print(i18n["errorNonexistentWiki"])
+            util.log_msg(i18n["errorNonexistentWiki"], True)
             continue
 
         # Catch improper credentials used to login
         except api.InputException:
-            print(i18n["errorLogin"])
+            util.log_msg(i18n["errorLogin"], True)
             continue
 
         # Prompt reentry of credentials if still not logged in
         if not is_logged_in:
-            print(i18n["errorLogin"])
+            util.log_msg(i18n["errorLogin"], True)
             continue
 
         # Check user groups to ensure only privileged users can mass-message
@@ -107,12 +107,12 @@ def main():
 
             # Hard exit if user is not in the right group to prevent spamming
             if not util.has_rights(my_usergroups, required_usergroups):
-                print(i18n["errorInsufficientPermissions"])
+                util.log_msg(i18n["errorInsufficientPermissions"], True)
                 return
 
         # Catch API errors and input errors generated server-side
         except (api.QueryException, api.InputException, KeyError):
-            print(i18n["errorAPI"])
+            util.log_msg(i18n["errorAPI"], True)
             continue
 
     # Acquire edit interval that prevents POST request rate limiting
@@ -121,7 +121,7 @@ def main():
 
     # Set one and half second default if error is encountered
     except (api.QueryException, api.InputException):
-        print(i18n["errorEditInterval"])
+        util.log_msg(i18n["errorEditInterval"], True)
         interval = 1.5
 
     # Main functionality loop; runs to user exit
@@ -134,14 +134,14 @@ def main():
         input_entries = []
 
         # Create de facto menu with indices derived from enumerate
-        print(i18n["consoleType"])
+        util.log_msg(i18n["consoleType"])
         for index, option in enumerate([
             i18n["consoleTypeCategories"],
             i18n["consoleTypeLoose"],
             i18n["consoleTypeExit"]
         ]):
             indices.append(index + 1)
-            print(f"{index + 1}: {option}")
+            util.log_msg(f"{index + 1}: {option}")
 
         # Ensure users cannot enter indices not provided as menu options
         while selected_index not in indices:
@@ -150,21 +150,21 @@ def main():
 
             # Ensure plaintext cannot be entered, ony menu option indices
             except ValueError:
-                print(i18n["errorTypeInvalid"])
+                util.log_msg(i18n["errorTypeInvalid"], True)
                 continue
 
             # Ensure plaintext cannot be entered, ony menu option indices
             if selected_index not in indices:
-                print(i18n["errorTypeInvalid"])
+                util.log_msg(i18n["errorTypeInvalid"], True)
                 continue
 
         # Exit out of loop and function
         if selected_index == 3:
-            print(i18n["consoleExit"])
+            util.log_msg(i18n["consoleExit"])
             break
 
         # Acquire recipient or category list, separated by comma delimiters
-        print(i18n["consoleEntries"])
+        util.log_msg(i18n["consoleEntries"])
         while not len(input_entries):
             input_entries = input(i18n["consoleEntriesPrompt"])
             input_entries = util.split_delimited_string_into_list(input_entries,
@@ -176,15 +176,15 @@ def main():
                 members = api.get_category_members(input_entries, interval,
                                                    wiki["api_php"], session)
             except api.QueryException:
-                print(i18n["errorAPI"])
+                util.log_msg(i18n["errorAPI"], True)
 
             # Only thrown if there are no members in the given category
             except api.InputException:
-                print(i18n["errorNoCategoryMembers"])
+                util.log_msg(i18n["errorNoCategoryMembers"], True)
 
             # Reprompt if the given categories are empty
             if not len(members):
-                print(i18n["errorNoCategoryMembers"])
+                util.log_msg(i18n["errorNoCategoryMembers"], True)
                 continue
 
         try:
@@ -193,23 +193,23 @@ def main():
             user_dicts = api.get_user_data(users, wiki["api_php"], False,
                                            session)
         except api.QueryException:
-            print(i18n["errorAPI"])
+            util.log_msg(i18n["errorAPI"], True)
             time.sleep(interval)
             continue
 
         # Reset if no valid usernames are retrieved from relevant query
         except api.InputException:
-            print(i18n["errorNoValidUsernames"])
+            util.log_msg(i18n["errorNoValidUsernames"], True)
             time.sleep(interval)
             continue
 
-        print(i18n["consoleMessage"])
+        util.log_msg(i18n["consoleMessage"])
         while True:
             message_title = input(i18n["consoleMessageTitlePrompt"])
 
             # Unlike message body, message title is required in all cases
             if not len(message_title):
-                print("errorMessageTitleMissing")
+                util.log_msg("errorMessageTitleMissing", True)
             else:
                 break
 
@@ -251,17 +251,21 @@ def main():
                     params[0] = first_param
 
                 # Print differing messages depending on status and include name
-                print(i18n[("errorMessageStd", "successMessage")[func(*params)]]
-                      .replace("$1", user_dict["name"]))
+                util.log_msg(
+                    i18n[
+                        ("errorMessageStd", "successMessage")[func(*params)]
+                    ].replace("$1", user_dict["name"]), True)
 
             except (api.QueryException, api.InputException):
-                print(i18n["errorMessageAPI"].replace("$1", user_dict["name"]))
+                util.log_msg(
+                    i18n["errorMessageAPI"].replace("$1", user_dict["name"]),
+                    True)
 
             # Sleep for set edit interval to ensure rate limiting is prevented
             finally:
                 time.sleep(interval)
 
-        print(i18n["successComplete"])
+        util.log_msg(i18n["successComplete"])
         time.sleep(interval)
 
 
