@@ -14,4 +14,3 @@ It was developed in response to the fact that per an archived discussion previou
 * Additionally, in addition to a command line-driven approach, the author will also permit the inclusion of a `settings.ini` file for the configuration of certain universal properties like bot password and username.  
 * The included `setup.py` file may not properly invoke the `setuptools.setup` function. Further research into the function's required formal parameters may be required in future, with particular emphasis on the `entry_points` parameter dictionary.
 * A complete test suite for the `api.py` and `util.py` modules is needed to ensure all operations operate as intended in a variety of well-formed and malformed cases.
-* Add `qqq` object and assorted member properties to `i18n.json` file to indicate what each field/property is referencing and where that message is intended for display in the application.

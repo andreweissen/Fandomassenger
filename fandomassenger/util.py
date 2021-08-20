@@ -278,7 +278,6 @@ def log_msg(message_text, is_error=False):
             logged is an error necessitating the use of ``sys.stderr``
         :return: None
     """
-
     (text_io := (sys.stdout, sys.stderr)[is_error]).write(f"{message_text}\n")
     text_io.flush()
 
