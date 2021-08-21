@@ -467,7 +467,7 @@ def has_message_walls(wikia_php, session=None):
         request = (session or requests.Session()).get(url=wikia_php, params={
             "controller": "UserProfile",
             "method": "getUserData",
-            "userId": 4403388, # Base Fandom user account ID
+            "userId": 4403388,  # Base Fandom user account ID
             "format": "json",
         })
         request.raise_for_status()

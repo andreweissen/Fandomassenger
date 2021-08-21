@@ -179,7 +179,7 @@ class JsonModelHTMLParser(html.parser.HTMLParser):
                 of the class instance as a string for inclusion in POST requests
                 made to the appropriate ``wikia.php`` endpoints
         """
-        return json.dumps(self.json_model)
+        return json.dumps(self.json_model, separators=(',', ':'))
 
 
 def determine_system_language():
