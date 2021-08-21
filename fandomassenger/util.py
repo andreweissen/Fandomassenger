@@ -212,7 +212,8 @@ def get_json_file(filename):
         :return: The contents of the indicated JSON file are returned for
             subsequent usage
     """
-    return json.load(open(filename, "r"))
+    with open(filename, "r") as jf:
+        return json.load(jf)
 
 
 def has_rights(groups, permissible):

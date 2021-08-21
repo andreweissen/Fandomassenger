@@ -1,6 +1,6 @@
 import fandomassenger.api as api
 import fandomassenger.util as util
-import requests
+import json
 import unittest
 
 
@@ -40,11 +40,12 @@ class TestUtil(unittest.TestCase):
                              test_case["result"])
 
     def test_JsonModelHTMLParser(self):
-        test_case = '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Test "},{"type":"text","marks":[{"type":"link","attrs":{"href":"https://eizen.fandom.com/wiki/Message_Wall:Eizen","title":null}}],"text":"link here"},{"type":"text","text":" text "},{"type":"text","marks":[{"type":"link","attrs":{"href":"https://eizen.fandom.com/wiki/User:Eizen","title":null}}],"text":"another link"},{"type":"text","text":"."}]}]}'
-        wikitext = "Test [[Message Wall:Eizen|link here]] text [[User:Eizen|another link]]."
+        test_file = util.get_json_file("../data/testJsonModel.json")
+        test_case = json.dumps(test_file, separators=(',', ':'))
+        wikitext = "Test [[Message Wall:Eizen|link here]] text " \
+                   + "[[User:Eizen|another link]]."
         api_php = "https://eizen.fandom.com/api.php"
-        parsed_message_body = api.parse_wikitext(wikitext, api_php,
-                                                 requests.Session())
+        parsed_message_body = api.parse_wikitext(wikitext, api_php)
         (parser := util.JsonModelHTMLParser()).feed(parsed_message_body)
 
         print(test_case)
