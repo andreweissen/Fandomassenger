@@ -1,5 +1,7 @@
 ## Fandomassenger ##
 
+__NOTE: With the reinstitution of [MassEdit's](https://github.com/andreweissen/MassEdit) bulk-messaging functionality in [UCP update 4](https://dev.fandom.com/wiki/Special:Diff/177402), continued development of the Fandomassenger application has been put on indefinite hold.__
+
 __Fandomassenger__, a [portmanteau](https://en.wikipedia.org/wiki/Portmanteau) of "__Fandom Mass Messenger__," is a command-line application/script written in [Python 3](https://en.wikipedia.org/wiki/History_of_Python#Version_3) for use in mass-messaging groups of users on [Fandom](https://en.wikipedia.org/wiki/Fandom_(website)) [MediaWiki](https://en.wikipedia.org/wiki/MediaWiki) [wikis](https://en.wikipedia.org/wiki/Wiki).
 
 It was developed in response to the fact that per an archived discussion previously held [here](https://dev.fandom.com/wiki/MediaWiki_talk:MassMessage.js), Wikia/Fandom Staff no longer look favorably upon [Dev wiki](https://dev.fandom.com/wiki/Fandom_Developers_Wiki) [JavaScript userscripts](https://dev.fandom.com/wiki/List_of_JavaScript_enhancements) that provide mass-messaging functionality, despite the [ongoing need for such automated functionality](https://dev.fandom.com/wiki/Special:Diff/153216) and the prior approval of longstanding scripts like [MassEdit](https://dev.fandom.com/wiki/MassEdit) and [Message](https://dev.fandom.com/wiki/Message) that have historically provided such functionality.
